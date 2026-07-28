@@ -4,6 +4,9 @@ import { Nav } from "@/components/nav";
 import { Products } from "@/components/products";
 import { Why } from "@/components/why";
 
+// Cloudflare pins SSG HTML (s-maxage=1y) — force periodic revalidation.
+export const revalidate = 3600;
+
 export default function Home() {
   return (
     <>

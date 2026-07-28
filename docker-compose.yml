@@ -1,0 +1,18 @@
+# Deploy compose for the OCI VM (/opt/apps/letchi).
+# Host Caddy proxies letchi.damien.asia -> 3020 (hub) and /books* -> 3021 (books).
+services:
+  letchi-hub:
+    build: ./hub
+    container_name: letchi-hub
+    ports:
+      - "127.0.0.1:3020:3000"
+      - "172.18.0.1:3020:3000"
+    restart: always
+
+  letchi-books:
+    build: ./nexbooks
+    container_name: letchi-books
+    ports:
+      - "127.0.0.1:3021:3000"
+      - "172.18.0.1:3021:3000"
+    restart: always
