@@ -15,6 +15,7 @@ import { logout } from "@/lib/actions";
 import { BRAND } from "@/lib/brand";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { NavLink } from "@/components/nav-link";
+import { Logo } from "@/components/logo";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const userId = await getSessionUserId();
@@ -36,14 +37,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <header style={{ background: "var(--card)", borderBottom: "1px solid var(--line)" }}>
         <div className="flag-stripe" />
         <div className="max-w-7xl mx-auto px-4 flex items-center gap-6 h-14">
-          <Link href="/" className="flex items-center gap-2 font-bold">
-            <span
-              className="inline-block w-2.5 h-2.5 rounded-full"
-              style={{ background: "var(--accent-text)" }}
-            />
-            <span>
-              {BRAND.family}
-              <span style={{ color: "var(--muted)", fontWeight: 500 }}> Pharmacie</span>
+          <Link href="/" className="flex items-baseline gap-1.5" style={{ color: "var(--text)" }}>
+            <Logo height={15} />
+            <span className="text-sm font-medium" style={{ color: "var(--muted)" }}>
+              Pharmacie
             </span>
           </Link>
           <nav className="flex items-center gap-1 flex-1 overflow-x-auto">
