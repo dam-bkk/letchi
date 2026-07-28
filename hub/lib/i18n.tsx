@@ -36,8 +36,8 @@ const DICT = {
   "flagship.kicker": { en: "The flagship", fr: "Le produit phare" },
   "flagship.title": { en: "MRA e-invoicing, handled.", fr: "L'e-invoicing MRA, maîtrisé." },
   "flagship.body": {
-    en: "Letchi Books turns every invoice into a fiscalised document: prescribed JSON to the MRA, IRN and QR code back in real time, a tamper-proof hash chain and five-year retention. Accounting that keeps you compliant by default.",
-    fr: "Letchi Books fait de chaque facture un document fiscalisé : JSON prescrit vers la MRA, IRN et QR code en temps réel, chaîne de hachage inviolable et conservation cinq ans. Une comptabilité conforme par défaut.",
+    en: "Lakaz Books turns every invoice into a fiscalised document: prescribed JSON to the MRA, IRN and QR code back in real time, a tamper-proof hash chain and five-year retention. Accounting that keeps you compliant by default.",
+    fr: "Lakaz Books fait de chaque facture un document fiscalisé : JSON prescrit vers la MRA, IRN et QR code en temps réel, chaîne de hachage inviolable et conservation cinq ans. Une comptabilité conforme par défaut.",
   },
 
   "products.title": { en: "The product family", fr: "La famille de produits" },

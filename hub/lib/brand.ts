@@ -37,7 +37,7 @@ import {
  */
 export const BRAND = {
   /** Family / company name */
-  name: "Letchi",
+  name: "Lakaz",
   /** Country line used in the footer */
   origin: "Mauritius",
 } as const;
@@ -66,7 +66,7 @@ export type Product = {
 
 export type ProductCategory = {
   id: string;
-  /** Category label without the family prefix, e.g. "People" → "Letchi People" */
+  /** Category label without the family prefix, e.g. "People" → "Lakaz People" */
   label: string;
   products: Product[];
 };

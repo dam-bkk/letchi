@@ -77,7 +77,7 @@ export function Flagship() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/books-dashboard.avif"
-              alt="Letchi Books dashboard — outstanding, overdue, VAT and fiscalised invoices"
+              alt="Lakaz Books dashboard — outstanding, overdue, VAT and fiscalised invoices"
               className="w-full"
               loading="lazy"
             />

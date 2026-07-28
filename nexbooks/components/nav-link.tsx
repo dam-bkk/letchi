@@ -21,7 +21,7 @@ export function NavLink({
       className="flex h-14 items-center gap-1.5 px-3 text-[13px] font-medium whitespace-nowrap transition-colors"
       style={{
         color: active ? "var(--primary-text)" : "var(--muted)",
-        boxShadow: active ? "inset 0 -2px 0 var(--primary)" : "none",
+        boxShadow: active ? "inset 0 -2px 0 var(--electric)" : "none",
       }}
     >
       {icon}

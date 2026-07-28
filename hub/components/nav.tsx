@@ -107,7 +107,7 @@ export function Nav() {
       onMouseLeave={() => setMenuOpen(false)}
     >
       <div className="mx-auto flex h-12 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
-        <a href="#top" aria-label="Letchi" className="text-ink" onMouseEnter={() => setMenuOpen(false)}>
+        <a href="#top" aria-label="Lakaz" className="text-ink" onMouseEnter={() => setMenuOpen(false)}>
           <Logo height={18} bold />
         </a>
         <nav className="hidden items-center gap-7 text-[13px] font-normal text-muted sm:flex">
