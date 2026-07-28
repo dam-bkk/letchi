@@ -7,9 +7,9 @@
   --text: #0b0f14;
   --muted: #5c6673;
   --line: #e7e9ee;
-  --primary: #1e5ef3;
-  --primary-hover: #1b55e8;
-  --primary-text: #1b55e8; /* blue used AS text on bg — 5.6:1 AA */
+  --primary: #0b5cff;
+  --primary-hover: #0a55f0;
+  --primary-text: #0a55f0; /* blue used AS text on bg — 5.6:1 AA */
   --primary-soft: #e9effe;
   --accent-text: #c03a26;
   --accent-chip-bg: #ffe1db;
