@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+/* Letchi design tokens — WCAG-validated (PLATFORM.md, blue variant) */
+:root {
+  --bg: #f8f9fb;
+  --card: #ffffff;
+  --text: #0e1626;
+  --muted: #55627a;
+  --line: #e4e8f0;
+  --primary: #2050e0;
+  --primary-hover: #1a41b8;
+  --primary-soft: #e8edfc;
+  --accent-text: #c03a26;
+  --accent-chip-bg: #ffe1db;
+  --accent-chip-text: #8a2314;
+  --success: #157f3d;
+  --success-soft: #e2f4e8;
+  --warn-text: #8a5a00;
+  --warn-soft: #fdf1d7;
+  --flag-red: #ea2839;
+  --flag-blue: #1a206d;
+  --flag-yellow: #ffd500;
+  --flag-green: #00a551;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0b1220;
+  --card: #111a2e;
+  --text: #e8edf7;
+  --muted: #93a3c0;
+  --line: #24304a;
+  --primary: #8aa8ff;
+  --primary-hover: #a5bcff;
+  --primary-soft: #1a2540;
+  --accent-text: #ff8a70;
+  --accent-chip-bg: #3a1912;
+  --accent-chip-text: #ffb3a1;
+  --success: #4cc47e;
+  --success-soft: #12301d;
+  --warn-text: #ffce6b;
+  --warn-soft: #33270e;
+}
+
+html {
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background 120ms;
+  cursor: pointer;
+}
+:root[data-theme="dark"] .btn-primary {
+  color: #0b1220;
+}
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: border-color 120ms;
+  cursor: pointer;
+}
+.btn-ghost:hover {
+  border-color: var(--muted);
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.875rem;
+}
+.input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.th {
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.td {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.flag-stripe {
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    var(--flag-red) 0 25%,
+    var(--flag-blue) 25% 50%,
+    var(--flag-yellow) 50% 75%,
+    var(--flag-green) 75% 100%
+  );
+}
+
+/* Inspection print views — plain black-on-white statutory registers,
+   independent of the app theme. */
+.print-page {
+  background: #ffffff;
+  color: #000000;
+  min-height: 100vh;
+  padding: 2.5rem 3rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.print-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+.print-table th,
+.print-table td {
+  border: 1px solid #000000;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+.print-table th {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.65rem;
+  background: #ffffff;
+}
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  html,
+  body {
+    background: #ffffff !important;
+  }
+  .print-page {
+    padding: 0;
+  }
+}

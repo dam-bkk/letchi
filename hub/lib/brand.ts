@@ -27,6 +27,8 @@ import {
   MapPin,
   Heart,
   ChefHat,
+  Pill,
+  Stethoscope,
 } from "lucide-react";
 
 /**
@@ -316,13 +318,14 @@ export const CATALOG: ProductCategory[] = [
     label: "Property",
     products: [
       {
-        id: "mysyndic",
-        name: "MySyndic",
+        id: "syndic",
+        name: "Syndic",
         icon: Building2,
-        status: "soon",
+        status: "live",
+        demoUrl: process.env.NEXT_PUBLIC_SYNDIC_URL ?? "/syndic",
         description: {
-          en: "Co-ownership made transparent: charges, assemblies, works and votes.",
-          fr: "La copropriété en toute transparence : charges, assemblées, travaux et votes.",
+          en: "Co-ownership made transparent: charges by millièmes, assemblies, works and votes.",
+          fr: "La copropriété en toute transparence : charges aux millièmes, assemblées, travaux et votes.",
         },
       },
       {
@@ -333,6 +336,33 @@ export const CATALOG: ProductCategory[] = [
         description: {
           en: "Tenancies, rent collection and maintenance for landlords and agencies.",
           fr: "Baux, loyers et entretien pour propriétaires et agences.",
+        },
+      },
+    ],
+  },
+  {
+    id: "health",
+    label: "Health",
+    products: [
+      {
+        id: "pharmacie",
+        name: "Pharmacie",
+        icon: Pill,
+        status: "live",
+        demoUrl: process.env.NEXT_PUBLIC_PHARMACIE_URL ?? "/pharmacie",
+        description: {
+          en: "Pharmacy stock, dispensing and the statutory registers — inspection-ready.",
+          fr: "Stock, délivrance et registres réglementaires de la pharmacie — prêts pour l'inspection.",
+        },
+      },
+      {
+        id: "klinik",
+        name: "Klinik",
+        icon: Stethoscope,
+        status: "soon",
+        description: {
+          en: "Appointments, patient records and insurer claims for private clinics.",
+          fr: "Rendez-vous, dossiers patients et remboursements assureurs pour cliniques privées.",
         },
       },
     ],

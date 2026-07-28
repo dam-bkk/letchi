@@ -1,0 +1,127 @@
+// Letchi Syndic — co-ownership (syndic de copropriété) management for Mauritius
+// SQLite for demo; keep types Postgres-portable (no SQLite-only features).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Building {
+  id               String   @id @default(cuid())
+  name             String
+  address          String
+  city             String
+  totalMillieme    Int      @default(10000)
+  reserveFundCents Int      @default(0)
+  updatedAt        DateTime @updatedAt
+}
+
+model User {
+  id       String @id @default(cuid())
+  name     String
+  email    String @unique
+  role     String @default("syndic")
+  initials String
+}
+
+model Owner {
+  id        String  @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  isCompany Boolean @default(false)
+  units     Unit[]
+}
+
+model Unit {
+  id        String       @id @default(cuid())
+  label     String       @unique // "A-101"
+  floor     Int
+  milliemes Int
+  ownerId   String
+  owner     Owner        @relation(fields: [ownerId], references: [id])
+  lines     ChargeLine[]
+  incidents Incident[]
+}
+
+// Appel de fonds: one call, apportioned across every unit by millièmes.
+model ChargeCall {
+  id         String       @id @default(cuid())
+  title      String // "Q3 2026 charges"
+  totalCents Int
+  issueDate  DateTime
+  dueDate    DateTime
+  status     String       @default("ISSUED") // DRAFT | ISSUED | CLOSED
+  createdAt  DateTime     @default(now())
+  lines      ChargeLine[]
+}
+
+model ChargeLine {
+  id           String     @id @default(cuid())
+  chargeCallId String
+  chargeCall   ChargeCall @relation(fields: [chargeCallId], references: [id], onDelete: Cascade)
+  unitId       String
+  unit         Unit       @relation(fields: [unitId], references: [id])
+  amountCents  Int // apportioned by millièmes, auto-computed
+  payments     Payment[]
+}
+
+model Payment {
+  id           String     @id @default(cuid())
+  chargeLineId String
+  chargeLine   ChargeLine @relation(fields: [chargeLineId], references: [id], onDelete: Cascade)
+  amountCents  Int
+  method       String     @default("bank_transfer") // bank_transfer | mcb_juice | myt_money | cash | cheque | card
+  paidAt       DateTime   @default(now())
+}
+
+model Incident {
+  id         String    @id @default(cuid())
+  title      String
+  description String
+  unitId     String?
+  unit       Unit?     @relation(fields: [unitId], references: [id])
+  commonArea String? // "Lift", "Garden", "Pool"… when not tied to a unit
+  status     String    @default("OPEN") // OPEN | DISPATCHED | RESOLVED
+  priority   String    @default("MEDIUM") // LOW | MEDIUM | HIGH
+  contractor String?
+  reportedAt DateTime  @default(now())
+  resolvedAt DateTime?
+  photoNote  String?
+}
+
+model Meeting {
+  id          String       @id @default(cuid())
+  title       String // "AGM 2026"
+  date        DateTime
+  status      String       @default("SCHEDULED") // SCHEDULED | HELD | CANCELLED
+  resolutions Resolution[]
+}
+
+// Votes are expressed in millièmes (out of the building's 10000).
+model Resolution {
+  id            String  @id @default(cuid())
+  meetingId     String
+  meeting       Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  order         Int     @default(1)
+  text          String
+  majorityType  String  @default("SIMPLE") // SIMPLE | ABSOLUTE | UNANIMITY
+  votesFor      Int     @default(0)
+  votesAgainst  Int     @default(0)
+  votesAbstain  Int     @default(0)
+}
+
+// Infra standard: every mutation writes an audit row.
+model AuditLog {
+  id        String   @id @default(cuid())
+  actor     String
+  action    String // e.g. charge.create, incident.dispatch, payment.record
+  entity    String
+  entityId  String
+  detail    String // JSON snapshot of the change
+  createdAt DateTime @default(now())
+}

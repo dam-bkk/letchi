@@ -1,100 +1,128 @@
 @import "tailwindcss";
 
-/* ---- Letchi design tokens (WCAG-validated, PLATFORM.md 2026-07-28) ---- */
-
+/* Letchi — Apple-grade minimal. One accent: brand blue #226ED9 (WCAG AA on light). */
 :root {
-  --bg: #f8f9fb;
+  --bg: #fbfbfd;
   --card: #ffffff;
-  --text: #0e1626;
-  --muted: #55627a;
-  --primary: #2050e0;
+  --ink: #0b0f14;
+  --muted: #6b7280;
+  --line: #e6e8ec;
+  --primary: #226ed9;
+  --primary-hover: #1b58b0;
   --primary-contrast: #ffffff;
-  --primary-hover: #1a41b8;
-  --accent: #c03a26; /* letchi red, text on bg (AA) */
-  --accent-chip-bg: #ffe1db;
-  --accent-chip-text: #8a2314;
-  --success: #157f3d;
-  --success-contrast: #ffffff;
-  --border: #e3e7ef;
-  --primary-soft: #eaeffc;
-
-  /* Mauritian flag stripe — decorative only */
-  --flag-red: #ea2839;
-  --flag-blue: #1a206d;
-  --flag-yellow: #ffd500;
-  --flag-green: #00a551;
+  --panel: #0b0f14;
+  --panel-ink: #f5f5f7;
+  --panel-muted: #9ba3af;
 }
 
-[data-theme="dark"] {
-  --bg: #0b1220;
-  --card: #111a2e;
-  --text: #e8edf7;
-  --muted: #93a3c0;
-  --primary: #8aa8ff;
-  --primary-contrast: #0b1220; /* dark text on light-blue primary (AAA) */
-  --primary-hover: #a4bbff;
-  --accent: #ff8a70;
-  --accent-chip-bg: #3a1a12;
-  --accent-chip-text: #ff8a70;
-  --success: #4cc478;
-  --success-contrast: #0b1220;
-  --border: #223151;
-  --primary-soft: #182647;
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --card: #121418;
+  --ink: #f5f5f7;
+  --muted: #8b93a1;
+  --line: #26292f;
+  --primary: #4d8fe8;
+  --primary-hover: #6ba3ef;
+  --primary-contrast: #051220;
+  --panel: #121418;
+  --panel-ink: #f5f5f7;
+  --panel-muted: #9ba3af;
 }
 
 @theme inline {
-  --color-app: var(--bg);
+  --color-bg: var(--bg);
   --color-card: var(--card);
-  --color-ink: var(--text);
+  --color-ink: var(--ink);
   --color-muted: var(--muted);
+  --color-line: var(--line);
   --color-primary: var(--primary);
-  --color-primary-contrast: var(--primary-contrast);
   --color-primary-hover: var(--primary-hover);
-  --color-primary-soft: var(--primary-soft);
-  --color-accent: var(--accent);
-  --color-accent-chip: var(--accent-chip-bg);
-  --color-accent-chip-text: var(--accent-chip-text);
-  --color-success: var(--success);
-  --color-success-contrast: var(--success-contrast);
-  --color-line: var(--border);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  --color-primary-contrast: var(--primary-contrast);
+  --color-panel: var(--panel);
+  --color-panel-ink: var(--panel-ink);
+  --color-panel-muted: var(--panel-muted);
 }
 
 html {
+  background: var(--bg);
+  color: var(--ink);
   scroll-behavior: smooth;
 }
 
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-sans);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* One clamp-based title scale shared across sections (charter rule) */
-.h-title {
-  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.125rem);
-  line-height: 1.15;
+/* Type scale — grandiose, tight-tracked */
+.h-display {
+  font-size: clamp(2.75rem, 7vw, 5.25rem);
+  line-height: 1.03;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
+}
+.h-title {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.h-kicker {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
-.h-hero {
-  font-size: clamp(2.25rem, 1.4rem + 4vw, 4rem);
-  line-height: 1.05;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+/* Apple-style pill buttons */
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 980px;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  padding: 0.7rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition: background 150ms ease;
+}
+.btn-pill:hover {
+  background: var(--primary-hover);
+}
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+.link-arrow:hover {
+  text-decoration: underline;
 }
 
-/* Thin decorative Mauritian four-stripe motif */
-.flag-stripe {
+/* Frosted nav */
+.nav-blur {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+}
+
+/* Discreet Mauritian signature — four dots */
+.flag-dots {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+.flag-dots i {
+  width: 4px;
   height: 4px;
-  border-radius: 9999px;
-  background: linear-gradient(
-    to right,
-    var(--flag-red) 0 25%,
-    var(--flag-blue) 25% 50%,
-    var(--flag-yellow) 50% 75%,
-    var(--flag-green) 75% 100%
-  );
+  border-radius: 50%;
+  display: block;
 }
+.flag-dots i:nth-child(1) { background: #ea2839; }
+.flag-dots i:nth-child(2) { background: #1a206d; }
+.flag-dots i:nth-child(3) { background: #ffd500; }
+.flag-dots i:nth-child(4) { background: #00a551; }

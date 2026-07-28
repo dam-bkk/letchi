@@ -1,3 +1,4 @@
+import { Flagship } from "@/components/flagship";
 import { Footer } from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { Nav } from "@/components/nav";
@@ -13,6 +14,7 @@ export default function Home() {
       <Nav />
       <main className="flex flex-1 flex-col">
         <Hero />
+        <Flagship />
         <Products />
         <Why />
       </main>

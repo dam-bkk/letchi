@@ -1,0 +1,136 @@
+// Letchi Pharmacie — pharmacy management for Mauritius
+// SQLite for demo; keep types Postgres-portable (no SQLite-only features).
+//
+// Statutory core:
+// - Pharmacy Act 1983: every dispensed prescription goes in the Prescription Book,
+//   retained 2 years (model Dispensation).
+// - Dangerous Drugs Act 2000: storage + transaction records for dangerous drugs,
+//   kept for inspection (model DangerousDrugEntry, running balance).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Pharmacy {
+  id             String   @id @default(cuid())
+  name           String
+  address        String
+  city           String
+  phone          String
+  licenceNo      String // Pharmacy Board licence number
+  pharmacistName String // responsible registered pharmacist
+  updatedAt      DateTime @updatedAt
+}
+
+model User {
+  id       String @id @default(cuid())
+  name     String
+  email    String @unique
+  role     String @default("pharmacist")
+  initials String
+}
+
+model Medication {
+  id                 String  @id @default(cuid())
+  name               String // brand/label name, e.g. "Paracétamol 500mg"
+  dci                String // generic (DCI) name, e.g. "paracetamol"
+  form               String // TABLET | SYRUP | INJECTION | CREAM | CAPSULE | INHALER | SACHET
+  strength           String // "500mg", "5mg/5ml"…
+  isDangerousDrug    Boolean @default(false) // Dangerous Drugs Act 2000 schedule
+  isPrescriptionOnly Boolean @default(false) // POM: requires prescriber details
+  unitPriceCents     Int
+  reorderLevel       Int     @default(20)
+
+  batches       Batch[]
+  dispensations Dispensation[]
+  ddEntries     DangerousDrugEntry[]
+  saleLines     SaleLine[]
+}
+
+model Batch {
+  id           String   @id @default(cuid())
+  medicationId String
+  medication   Medication @relation(fields: [medicationId], references: [id])
+  lotNo        String
+  expiryDate   DateTime
+  quantity     Int // units remaining in this batch
+  receivedAt   DateTime @default(now())
+  supplier     String
+
+  dispensations Dispensation[]
+  ddEntries     DangerousDrugEntry[]
+  saleLines     SaleLine[]
+}
+
+// One row = one line of the statutory Prescription Book (Pharmacy Act 1983, kept 2 years).
+model Dispensation {
+  id              String   @id @default(cuid())
+  patientName     String
+  patientNic      String? // national ID number, optional
+  prescriberName  String? // REQUIRED when the medication is prescription-only
+  prescriberRegNo String? // Medical Council registration number
+  medicationId    String
+  medication      Medication @relation(fields: [medicationId], references: [id])
+  batchId         String
+  batch           Batch @relation(fields: [batchId], references: [id])
+  quantity        Int
+  dispensedAt     DateTime @default(now())
+  pharmacist      String
+  priceCents      Int
+
+  ddEntry DangerousDrugEntry?
+}
+
+// Dangerous Drugs Register (Dangerous Drugs Act 2000). Auto-created on every
+// dispensation of a dangerous drug (quantityOut) and on every stock receipt
+// (quantityIn), carrying the per-medication running balance for inspection.
+model DangerousDrugEntry {
+  id             String   @id @default(cuid())
+  medicationId   String
+  medication     Medication @relation(fields: [medicationId], references: [id])
+  batchId        String
+  batch          Batch @relation(fields: [batchId], references: [id])
+  quantityIn     Int      @default(0)
+  quantityOut    Int      @default(0)
+  balanceAfter   Int
+  dispensationId String?  @unique
+  dispensation   Dispensation? @relation(fields: [dispensationId], references: [id])
+  timestamp      DateTime @default(now())
+}
+
+// OTC counter sale (no prescription).
+model Sale {
+  id         String   @id @default(cuid())
+  totalCents Int      @default(0)
+  paidAt     DateTime @default(now())
+  method     String   @default("cash") // cash | card | mcb_juice | myt_money
+  lines      SaleLine[]
+}
+
+model SaleLine {
+  id           String @id @default(cuid())
+  saleId       String
+  sale         Sale @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  medicationId String
+  medication   Medication @relation(fields: [medicationId], references: [id])
+  batchId      String
+  batch        Batch @relation(fields: [batchId], references: [id])
+  quantity     Int
+  priceCents   Int // line total
+}
+
+// Infra standard: every mutation writes an audit row.
+model AuditLog {
+  id        String   @id @default(cuid())
+  actor     String
+  action    String // e.g. dispensation.create, stock.receive, sale.create
+  entity    String
+  entityId  String
+  detail    String // JSON snapshot of the change
+  createdAt DateTime @default(now())
+}
