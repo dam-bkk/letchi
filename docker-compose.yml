@@ -16,3 +16,19 @@ services:
       - "127.0.0.1:3021:3000"
       - "172.18.0.1:3021:3000"
     restart: always
+
+  letchi-syndic:
+    build: ./syndic
+    container_name: letchi-syndic
+    ports:
+      - "127.0.0.1:3022:3000"
+      - "172.18.0.1:3022:3000"
+    restart: always
+
+  letchi-pharmacie:
+    build: ./pharmacie
+    container_name: letchi-pharmacie
+    ports:
+      - "127.0.0.1:3023:3000"
+      - "172.18.0.1:3023:3000"
+    restart: always

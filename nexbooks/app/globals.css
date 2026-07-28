@@ -1,15 +1,16 @@
 @import "tailwindcss";
 
-/* Letchi design tokens — WCAG-validated (PLATFORM.md, blue variant) */
+/* Letchi Books — premium app skin. Brand blue #226ED9 (logo), WCAG-checked. */
 :root {
-  --bg: #f8f9fb;
+  --bg: #f6f7f9;
   --card: #ffffff;
-  --text: #0e1626;
-  --muted: #55627a;
-  --line: #e4e8f0;
-  --primary: #2050e0;
-  --primary-hover: #1a41b8;
-  --primary-soft: #e8edfc;
+  --text: #0b0f14;
+  --muted: #5c6673;
+  --line: #e7e9ee;
+  --primary: #1e5ef3;
+  --primary-hover: #1b55e8;
+  --primary-text: #1b55e8; /* blue used AS text on bg — 5.6:1 AA */
+  --primary-soft: #e9effe;
   --accent-text: #c03a26;
   --accent-chip-bg: #ffe1db;
   --accent-chip-text: #8a2314;
@@ -17,6 +18,7 @@
   --success-soft: #e2f4e8;
   --warn-text: #8a5a00;
   --warn-soft: #fdf1d7;
+  --shadow: 0 1px 2px rgba(11, 15, 20, 0.04), 0 8px 24px rgba(11, 15, 20, 0.05);
   --flag-red: #ea2839;
   --flag-blue: #1a206d;
   --flag-yellow: #ffd500;
@@ -24,14 +26,15 @@
 }
 
 :root[data-theme="dark"] {
-  --bg: #0b1220;
-  --card: #111a2e;
-  --text: #e8edf7;
-  --muted: #93a3c0;
-  --line: #24304a;
+  --bg: #0b0f14;
+  --card: #14181f;
+  --text: #eef1f6;
+  --muted: #96a0ad;
+  --line: #252b35;
   --primary: #8aa8ff;
   --primary-hover: #a5bcff;
-  --primary-soft: #1a2540;
+  --primary-text: #8aa8ff;
+  --primary-soft: #1b2233;
   --accent-text: #ff8a70;
   --accent-chip-bg: #3a1912;
   --accent-chip-text: #ffb3a1;
@@ -39,6 +42,7 @@
   --success-soft: #12301d;
   --warn-text: #ffce6b;
   --warn-soft: #33270e;
+  --shadow: none;
 }
 
 html {
@@ -47,14 +51,20 @@ html {
 }
 
 body {
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
   font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  letter-spacing: -0.02em;
 }
 
 .card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
 }
 
 .btn-primary {
@@ -63,18 +73,21 @@ body {
   gap: 0.5rem;
   background: var(--primary);
   color: #ffffff;
-  border-radius: 8px;
-  padding: 0.5rem 0.9rem;
+  border-radius: 980px;
+  padding: 0.55rem 1.15rem;
   font-size: 0.875rem;
   font-weight: 600;
-  transition: background 120ms;
+  transition: background 150ms ease, transform 100ms ease;
   cursor: pointer;
 }
 :root[data-theme="dark"] .btn-primary {
-  color: #0b1220;
+  color: #0b0f14;
 }
 .btn-primary:hover {
   background: var(--primary-hover);
+}
+.btn-primary:active {
+  transform: scale(0.98);
 }
 .btn-primary:disabled {
   opacity: 0.5;
@@ -88,11 +101,11 @@ body {
   border: 1px solid var(--line);
   background: var(--card);
   color: var(--text);
-  border-radius: 8px;
-  padding: 0.5rem 0.9rem;
+  border-radius: 980px;
+  padding: 0.55rem 1.15rem;
   font-size: 0.875rem;
   font-weight: 500;
-  transition: border-color 120ms;
+  transition: border-color 150ms ease;
   cursor: pointer;
 }
 .btn-ghost:hover {
@@ -104,34 +117,51 @@ body {
   border: 1px solid var(--line);
   background: var(--card);
   color: var(--text);
-  border-radius: 8px;
-  padding: 0.45rem 0.7rem;
+  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 .input:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 18%, transparent);
 }
 
 .th {
   text-align: left;
   font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--muted);
-  padding: 0.55rem 0.75rem;
+  padding: 0.6rem 1rem;
   border-bottom: 1px solid var(--line);
   white-space: nowrap;
 }
 .td {
-  padding: 0.6rem 0.75rem;
+  padding: 0.65rem 1rem;
   font-size: 0.875rem;
   border-bottom: 1px solid var(--line);
 }
+tbody tr {
+  transition: background 100ms ease;
+}
+tbody tr:hover {
+  background: color-mix(in srgb, var(--primary) 3%, transparent);
+}
+tbody tr:last-child .td {
+  border-bottom: none;
+}
+
+.nav-blur {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background: color-mix(in srgb, var(--card) 82%, transparent);
+}
 
 .flag-stripe {
-  height: 3px;
+  height: 2px;
   background: linear-gradient(
     to right,
     var(--flag-red) 0 25%,

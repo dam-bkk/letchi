@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+/** TrackSpend-style tab: icon + label, active = blue underline. */
 export function NavLink({
   href,
   icon,
@@ -17,12 +18,11 @@ export function NavLink({
   return (
     <Link
       href={href}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap"
-      style={
-        active
-          ? { background: "var(--primary-soft)", color: "var(--primary)" }
-          : { color: "var(--muted)" }
-      }
+      className="flex h-14 items-center gap-1.5 px-3 text-[13px] font-medium whitespace-nowrap transition-colors"
+      style={{
+        color: active ? "var(--primary-text)" : "var(--muted)",
+        boxShadow: active ? "inset 0 -2px 0 var(--primary)" : "none",
+      }}
     >
       {icon}
       {label}

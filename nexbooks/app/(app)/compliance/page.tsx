@@ -134,7 +134,7 @@ export default async function CompliancePage() {
             {rows.map(({ r, linkOk }) => (
               <tr key={r.id}>
                 <td className="td">
-                  <Link href={`/invoices/${r.invoiceId}`} className="font-semibold" style={{ color: "var(--primary)" }}>
+                  <Link href={`/invoices/${r.invoiceId}`} className="font-semibold" style={{ color: "var(--primary-text)" }}>
                     {r.invoice.number}
                   </Link>
                 </td>

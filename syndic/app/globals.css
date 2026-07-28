@@ -140,3 +140,14 @@ body {
     var(--flag-green) 75% 100%
   );
 }
+
+/* Printable minutes (procès-verbal) */
+@media print {
+  .print-hide {
+    display: none !important;
+  }
+  html {
+    background: #ffffff;
+    color: #000000;
+  }
+}

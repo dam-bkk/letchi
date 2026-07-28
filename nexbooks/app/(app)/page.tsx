@@ -11,33 +11,30 @@ import { db } from "@/lib/db";
 import { formatMUR } from "@/lib/money";
 import { StatusBadge } from "@/components/status-badge";
 
-function StatCard({
+// TrackSpend-style inline stat for the single KPI strip card.
+function Stat({
   icon,
   label,
   value,
-  sub,
   accent,
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
-  sub?: string;
   accent?: string;
 }) {
   return (
-    <div className="card p-4 flex flex-col gap-1">
-      <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--muted)" }}>
-        {icon}
+    <div className="flex items-center gap-2.5 whitespace-nowrap">
+      <span style={{ color: "var(--muted)" }}>{icon}</span>
+      <span
+        className="text-[11px] font-semibold uppercase tracking-wider"
+        style={{ color: "var(--muted)" }}
+      >
         {label}
-      </div>
-      <div className="text-xl font-bold" style={accent ? { color: accent } : undefined}>
+      </span>
+      <span className="text-lg font-bold" style={accent ? { color: accent } : undefined}>
         {value}
-      </div>
-      {sub ? (
-        <div className="text-xs" style={{ color: "var(--muted)" }}>
-          {sub}
-        </div>
-      ) : null}
+      </span>
     </div>
   );
 }
@@ -87,6 +84,13 @@ export default async function Dashboard() {
   const bucketMax = Math.max(...buckets, 1);
   const bucketLabels = ["Current", "1–30 d", "31–60 d", "60+ d"];
 
+  // Collection rate: paid share of everything invoiced this year (excl. drafts).
+  const invoicedYtd = invoices
+    .filter((i) => i.status !== "DRAFT" && i.status !== "CANCELLED")
+    .reduce((s, i) => s + i.totalCents, 0);
+  const collectedYtd = invoices.reduce((s, i) => s + paidOf(i), 0);
+  const collectionPct = invoicedYtd > 0 ? (collectedYtd / invoicedYtd) * 100 : 0;
+
   const recent = invoices.slice(0, 8);
 
   return (
@@ -98,11 +102,27 @@ export default async function Dashboard() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        <StatCard icon={<Wallet size={13} />} label="Outstanding" value={formatMUR(outstanding, { compact: true })} sub={`${open.length} open invoices`} />
-        <StatCard icon={<AlarmClock size={13} />} label="Overdue" value={formatMUR(overdue, { compact: true })} sub={`${overdueList.length} invoices past due`} accent={overdue > 0 ? "var(--accent-text)" : undefined} />
-        <StatCard icon={<TrendingUp size={13} />} label="Revenue YTD (excl. VAT)" value={formatMUR(ytd, { compact: true })} sub="Issued + paid, 2026" />
-        <StatCard icon={<Landmark size={13} />} label="VAT collected — this period" value={formatMUR(periodVat, { compact: true })} sub={`Return due in ${daysToFiling} days`} />
+      {/* TrackSpend-style KPI strip: one card, inline stats + collection bar */}
+      <div className="card px-5 py-4 flex flex-wrap items-center gap-x-8 gap-y-3">
+        <Stat icon={<Wallet size={14} />} label="Outstanding" value={formatMUR(outstanding, { compact: true })} accent="var(--primary-text)" />
+        <Stat icon={<AlarmClock size={14} />} label="Overdue" value={formatMUR(overdue, { compact: true })} accent={overdue > 0 ? "var(--accent-text)" : undefined} />
+        <Stat icon={<TrendingUp size={14} />} label="Revenue YTD" value={formatMUR(ytd, { compact: true })} />
+        <Stat icon={<Landmark size={14} />} label={`VAT · due in ${daysToFiling}d`} value={formatMUR(periodVat, { compact: true })} />
+        <div className="flex items-center gap-3 flex-1 min-w-[220px]">
+          <span
+            className="text-[11px] font-semibold uppercase tracking-wider whitespace-nowrap"
+            style={{ color: "var(--muted)" }}
+          >
+            Collection
+          </span>
+          <span className="text-lg font-bold">{collectionPct.toFixed(1)}%</span>
+          <div className="flex-1 h-1.5 rounded-full" style={{ background: "var(--line)" }}>
+            <div
+              className="h-1.5 rounded-full"
+              style={{ width: `${Math.min(collectionPct, 100)}%`, background: "var(--success)" }}
+            />
+          </div>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-4">
@@ -136,7 +156,7 @@ export default async function Dashboard() {
         <div className="card lg:col-span-2 overflow-x-auto">
           <div className="flex items-center justify-between px-4 pt-4 pb-2">
             <h2 className="text-sm font-semibold">Recent invoices</h2>
-            <Link href="/invoices" className="text-xs font-semibold flex items-center gap-1" style={{ color: "var(--primary)" }}>
+            <Link href="/invoices" className="text-xs font-semibold flex items-center gap-1" style={{ color: "var(--primary-text)" }}>
               All invoices <ArrowRight size={12} />
             </Link>
           </div>
@@ -154,7 +174,7 @@ export default async function Dashboard() {
               {recent.map((i) => (
                 <tr key={i.id}>
                   <td className="td">
-                    <Link href={`/invoices/${i.id}`} className="font-semibold" style={{ color: "var(--primary)" }}>
+                    <Link href={`/invoices/${i.id}`} className="font-semibold" style={{ color: "var(--primary-text)" }}>
                       {i.number}
                     </Link>
                   </td>

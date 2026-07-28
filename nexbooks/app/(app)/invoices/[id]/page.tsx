@@ -186,7 +186,7 @@ export default async function InvoiceDetail({ params }: { params: Promise<{ id: 
                   Submitted {invoice.fiscal.submittedAt.toLocaleString("en-GB")} · retained 5 years
                 </p>
                 <details>
-                  <summary className="text-xs font-semibold cursor-pointer" style={{ color: "var(--primary)" }}>
+                  <summary className="text-xs font-semibold cursor-pointer" style={{ color: "var(--primary-text)" }}>
                     View MRA JSON exchange
                   </summary>
                   <pre className="text-[10px] mt-2 p-2 rounded overflow-x-auto" style={{ background: "var(--bg)", maxHeight: 260, overflowY: "auto" }}>

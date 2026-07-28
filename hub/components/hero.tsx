@@ -14,8 +14,8 @@ export function Hero() {
 
   return (
     <section id="top" className="flex flex-col items-center px-4 pb-28 pt-36 text-center sm:pt-44">
-      <Mark size={34} />
-      <h1 className="h-display mt-8 max-w-4xl">{t("hero.title")}</h1>
+      <Mark size={58} />
+      <h1 className="h-display mt-9 max-w-4xl whitespace-pre-line">{t("hero.title")}</h1>
       <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
         {t("hero.subtitle")}
       </p>

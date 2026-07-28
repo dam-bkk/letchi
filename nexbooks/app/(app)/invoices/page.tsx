@@ -39,7 +39,7 @@ export default async function InvoicesPage({
             className="px-3 py-1.5 rounded-lg text-xs font-semibold"
             style={
               filter === f
-                ? { background: "var(--primary-soft)", color: "var(--primary)" }
+                ? { background: "var(--primary-soft)", color: "var(--primary-text)" }
                 : { color: "var(--muted)" }
             }
           >
@@ -66,7 +66,7 @@ export default async function InvoicesPage({
             {invoices.map((i) => (
               <tr key={i.id}>
                 <td className="td">
-                  <Link href={`/invoices/${i.id}`} className="font-semibold" style={{ color: "var(--primary)" }}>
+                  <Link href={`/invoices/${i.id}`} className="font-semibold" style={{ color: "var(--primary-text)" }}>
                     {i.number}
                   </Link>
                 </td>

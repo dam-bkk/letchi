@@ -23,8 +23,8 @@ const DICT = {
   "nav.language": { en: "Language", fr: "Langue" },
 
   "hero.title": {
-    en: "One platform. Every Mauritian business.",
-    fr: "Une plateforme. Toutes les entreprises mauriciennes.",
+    en: "One platform.\nEvery Mauritian business.",
+    fr: "Une plateforme.\nToutes les entreprises mauriciennes.",
   },
   "hero.subtitle": {
     en: "A family of simple, connected SaaS products built in Mauritius — from MRA-compliant invoicing to HR, property and everyday life.",
@@ -77,6 +77,16 @@ const DICT = {
     en: "All products are independent apps on one shared platform.",
     fr: "Tous les produits sont des applications indépendantes sur une plateforme commune.",
   },
+  "footer.cta.kicker": { en: "Contact", fr: "Contact" },
+  "footer.cta.sub": {
+    en: "A product idea, a partnership, a market gap we missed — write to us.",
+    fr: "Une idée de produit, un partenariat, un manque qu'on n'a pas vu — écrivez-nous.",
+  },
+  "footer.cta.button": { en: "Write to us", fr: "Écrivez-nous" },
+  "footer.col.products": { en: "Products", fr: "Produits" },
+  "footer.col.company": { en: "Company", fr: "Société" },
+  "footer.link.vision": { en: "Vision", fr: "Vision" },
+  "footer.link.demo": { en: "Books demo", fr: "Démo Books" },
 } satisfies Record<string, Localized>;
 
 export type DictKey = keyof typeof DICT;
