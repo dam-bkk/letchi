@@ -1,0 +1,125 @@
+// Letchi Books — invoicing-first accounting for Mauritius
+// SQLite for demo; keep types Postgres-portable (no SQLite-only features).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Company {
+  id        String @id @default(cuid())
+  name      String
+  brn       String // Business Registration Number, e.g. C12345678
+  vatNo     String
+  address   String
+  city      String
+  phone     String
+  email     String
+  // e-invoicing posture: SIMULATED (built-in IFP simulator) | LIVE (real MRA, needs BRN + dev account)
+  ebsMode   String @default("SIMULATED")
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id       String @id @default(cuid())
+  name     String
+  email    String @unique
+  role     String @default("admin")
+  initials String
+}
+
+model Customer {
+  id        String    @id @default(cuid())
+  name      String
+  brn       String?
+  vatNo     String?
+  email     String?
+  phone     String?
+  address   String?
+  city      String?
+  createdAt DateTime  @default(now())
+  invoices  Invoice[]
+}
+
+model Product {
+  id             String  @id @default(cuid())
+  name           String
+  description    String?
+  unitPriceCents Int
+  vatRate        Int     @default(15) // percent: 15 standard MU, 0 zero-rated/exempt
+  unit           String  @default("unit")
+  active         Boolean @default(true)
+}
+
+model Invoice {
+  id            String        @id @default(cuid())
+  number        String        @unique // LB-2026-0001
+  type          String        @default("INVOICE") // INVOICE | CREDIT_NOTE | DEBIT_NOTE
+  status        String        @default("DRAFT") // DRAFT | ISSUED | PAID | CANCELLED
+  customerId    String
+  customer      Customer      @relation(fields: [customerId], references: [id])
+  issueDate     DateTime
+  dueDate       DateTime
+  currency      String        @default("MUR")
+  subtotalCents Int           @default(0)
+  vatCents      Int           @default(0)
+  totalCents    Int           @default(0)
+  notes         String?
+  relatedNumber String? // for credit/debit notes: the original invoice number
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  lines         InvoiceLine[]
+  payments      Payment[]
+  fiscal        Fiscalisation?
+}
+
+model InvoiceLine {
+  id             String  @id @default(cuid())
+  invoiceId      String
+  invoice        Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  description    String
+  quantity       Float
+  unit           String  @default("unit")
+  unitPriceCents Int
+  vatRate        Int     @default(15)
+  totalCents     Int // line total incl. VAT
+}
+
+model Payment {
+  id         String   @id @default(cuid())
+  invoiceId  String
+  invoice    Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amountCents Int
+  method     String   @default("bank_transfer") // bank_transfer | mcb_juice | myt_money | cash | cheque | card
+  reference  String?
+  paidAt     DateTime @default(now())
+}
+
+// MRA Electronic Billing System fiscalisation record (simulator in demo mode).
+// Fiscalised documents must be retained >= 5 years.
+model Fiscalisation {
+  id           String   @id @default(cuid())
+  invoiceId    String   @unique
+  invoice      Invoice  @relation(fields: [invoiceId], references: [id])
+  irn          String // Invoice Reference Number returned by IFP
+  qrPayload    String // string encoded into the QR code
+  requestJson  String // exact JSON sent to the IFP
+  responseJson String // exact JSON returned
+  status       String // FISCALISED | REJECTED
+  submittedAt  DateTime @default(now())
+}
+
+// Infra standard: every mutation writes an audit row.
+model AuditLog {
+  id        String   @id @default(cuid())
+  actor     String
+  action    String // e.g. invoice.create, invoice.fiscalise, customer.update
+  entity    String
+  entityId  String
+  detail    String // JSON snapshot of the change
+  createdAt DateTime @default(now())
+}

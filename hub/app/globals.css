@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+/* ---- Letchi design tokens (WCAG-validated, PLATFORM.md 2026-07-28) ---- */
+
+:root {
+  --bg: #f8f9fb;
+  --card: #ffffff;
+  --text: #0e1626;
+  --muted: #55627a;
+  --primary: #2050e0;
+  --primary-contrast: #ffffff;
+  --primary-hover: #1a41b8;
+  --accent: #c03a26; /* letchi red, text on bg (AA) */
+  --accent-chip-bg: #ffe1db;
+  --accent-chip-text: #8a2314;
+  --success: #157f3d;
+  --success-contrast: #ffffff;
+  --border: #e3e7ef;
+  --primary-soft: #eaeffc;
+
+  /* Mauritian flag stripe — decorative only */
+  --flag-red: #ea2839;
+  --flag-blue: #1a206d;
+  --flag-yellow: #ffd500;
+  --flag-green: #00a551;
+}
+
+[data-theme="dark"] {
+  --bg: #0b1220;
+  --card: #111a2e;
+  --text: #e8edf7;
+  --muted: #93a3c0;
+  --primary: #8aa8ff;
+  --primary-contrast: #0b1220; /* dark text on light-blue primary (AAA) */
+  --primary-hover: #a4bbff;
+  --accent: #ff8a70;
+  --accent-chip-bg: #3a1a12;
+  --accent-chip-text: #ff8a70;
+  --success: #4cc478;
+  --success-contrast: #0b1220;
+  --border: #223151;
+  --primary-soft: #182647;
+}
+
+@theme inline {
+  --color-app: var(--bg);
+  --color-card: var(--card);
+  --color-ink: var(--text);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-contrast: var(--primary-contrast);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-accent: var(--accent);
+  --color-accent-chip: var(--accent-chip-bg);
+  --color-accent-chip-text: var(--accent-chip-text);
+  --color-success: var(--success);
+  --color-success-contrast: var(--success-contrast);
+  --color-line: var(--border);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+/* One clamp-based title scale shared across sections (charter rule) */
+.h-title {
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.125rem);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.h-hero {
+  font-size: clamp(2.25rem, 1.4rem + 4vw, 4rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* Thin decorative Mauritian four-stripe motif */
+.flag-stripe {
+  height: 4px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    var(--flag-red) 0 25%,
+    var(--flag-blue) 25% 50%,
+    var(--flag-yellow) 50% 75%,
+    var(--flag-green) 75% 100%
+  );
+}
