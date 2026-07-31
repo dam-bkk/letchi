@@ -7,10 +7,10 @@
   --text: #0b0f14;
   --muted: #414b58;
   --line: #e7e9ee;
-  --primary: #173acb;
-  --electric: #0b5cff;
-  --primary-hover: #1233b8;
-  --primary-text: #173acb; /* blue used AS text on bg — 5.6:1 AA */
+  --primary: #0345c9;
+  --electric: #034bda;
+  --primary-hover: #033fb8;
+  --primary-text: #0345c9; /* blue used AS text on bg — 5.6:1 AA */
   --primary-soft: #e9effe;
   --accent-text: #932917;
   --accent-chip-bg: #ffe1db;
